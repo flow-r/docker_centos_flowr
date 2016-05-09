@@ -6,7 +6,7 @@
 # Source: https://github.com/flow-r/docker_centos_flowr
 # Based on v0.9.7: https://github.com/flow-r/docker_centos_flowr/releases/tag/v0.9.7
 
-FROM gmapps/docker_centos_flowr:0.9.8
+FROM flowrbio/ultraseq:0.9.8
 
 ## For questions, visit https:
 MAINTAINER "Samir B. Amin" <tweet:sbamin; sbamin.com/contact>
