@@ -126,49 +126,30 @@ RUN mkdir -p /opt/picard && \
 RUN R CMD javareconf && \
 	Rscript -e 'install.packages("rJava", repos = c(CRAN="http://cran.rstudio.com", DRAT="http://sahilseth.github.io/drat"))'
 
+## Install bamtools
+## Copyright under  MIT License by Derek Barnett, Erik Garrison, Gabor Marth, Michael Stromberg
+## https://github.com/pezmaster31/bamtools/wiki/Building-and-installing
+RUN yum install -y cmake && \
+		cd /opt && \
+		git clone git://github.com/pezmaster31/bamtools.git && \
+		cd bamtools && \
+		mkdir p build && cd build && \
+		cmake .. && make && cd .. && \
+		echo 'pathmunge /opt/bamtools/bin after' >> /etc/profile.d/ngspaths.sh
+
+#### Pending ####
+
+# Add /licenses.txt to include respective licenses from above software developers.
+
 ##### IMPORTANT: LICENSE RESTRICTION #####
+## Following can not be containerized as they require individual licenses. Use volume mount during docker run.
 RUN mkdir -p /opt/{gatk,mutect,bundle}
-## GATK and MuTect can NOT be containerized without prior approval from licensing authority, Broad Institute.
-# https://www.broadinstitute.org/gatk/blog?id=5408
-# Contact Geraldine_VdAuwera <vdauwera@broadinstitute.org> before making image public.
-
-# RUN mkdir -p /opt/gatk && \
-# 	wget --no-check-certificate http://j.mp/gatk3-5-glass -O /opt/gatk3.5.tar.bz2 && \
-# 	cd /opt/gatk && tar xvjf /opt/gatk3.5.tar.bz2 && \
-# 	echo 'pathmunge /opt/gatk after' >> /etc/profile.d/ngspaths.sh && \
-# 	rm -rf /opt/gatk3.5.tar.bz2
-
-# RUN mkdir -p /opt/mutect && \
-# 	wget --no-check-certificate http://j.mp/mutect117-glass -O /opt/mutect117.zip && \
-# 	cd /opt/mutect && unzip /opt/mutect117.zip -d /opt/mutect && \
-# 	echo 'pathmunge /opt/mutect after' >> /etc/profile.d/ngspaths.sh && \
-# 	rm -f /opt/mutect117.zip
-
-# default is mutect 1.1.7 from GATK download page.
-# mutect 1.1.4 is at http://j.mp/mutect114-glass but not used in this pipeline.
-
-# GATK and MuTect will be volume mounted at /opt/gatk/ and /opt/mutect/ respectively.
-##### END LICENSE RESTRICTION #####
-
-###### PENDING CONIFG ######
-
-# See scripts/gatk_bundle.sh script to download bundle.
-# Derived from https://github.com/BD2KGenomics/gatk-whole-genome-pipeline/blob/master/GATKsetup.sh
-
-#### Configure Users ####
-
-# RUN groupadd -g 45277 glasswriters && \
-# 	useradd -m -d /home/glasswriter -s /bin/bash -c "GLASS Writer"  -U glasswriter -u 1000 -G glasswriters && id -a glasswriter
-
-#### Confiure boot script ####
-# To set up /etc/profile.d/ and init script to allow on-the-fly change in environment variables during docker run command. Read at https://github.com/rocker-org/rocker/tree/master/rstudio
-
-###### END PENDING CONFIG ######
 
 # Cleanup
 RUN yum clean all
 
 # set workdir to flowr volumne mounted directory
+# This requires proper volume mount while running docker run -v flag to allow docker container to see flowr directory.
 WORKDIR /scratch/docker_mutect/flowr
 
 ENV PATH /opt/miniconda/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/opt/samtools/samtools/bin:/opt/samtools/bcftools/bin:/opt/samtools/htslib/bin:/opt/bwa.kit:/opt/bedtools2/bin:/opt/picard/default:/opt/gatk:/opt/mutect
