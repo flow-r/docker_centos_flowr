@@ -1,0 +1,19 @@
+sudo: required
+
+services:
+  - docker
+
+before_script:
+  - docker build -t flowrlocal/ultraseq .
+  - docker images
+  - docker ps -a
+
+script:
+  - docker run --name test_flowr flowrlocal/ultraseq /bin/bash -c "flowr run x=sleep_pipe platform=local execute=TRUE"
+
+after_success:
+  - docker ps -a
+  - docker rm test_flowr
+  - docker rmi flowrlocal/ultraseq
+
+## END ##
