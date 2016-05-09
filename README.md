@@ -14,13 +14,15 @@ To pull stable docker image,
 docker pull flowrbio/ultraseq:0.9.8
 ```
 
-To pull latest docker image, 
+### latest docker image:
+[![Build Status](https://travis-ci.org/flow-r/docker_ultraseq.svg?branch=master)](https://travis-ci.org/flow-r/docker_ultraseq)
 
 ```
 docker pull flowrbio/ultraseq:latest
 ```
 
-To pull devel docker image, 
+### devel docker image: 
+[![Build Status](https://travis-ci.org/flow-r/docker_ultraseq.svg?branch=devel)](https://travis-ci.org/flow-r/docker_ultraseq) 
 
 ```
 docker pull flowrbio/ultraseq:devel
