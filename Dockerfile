@@ -6,12 +6,12 @@
 # Source: https://github.com/flow-r/docker_centos_flowr
 # Based on v0.9.7: https://github.com/flow-r/docker_centos_flowr/releases/tag/v0.9.7
 
-FROM gmapps/docker_centos_flowr:0.9.7
+FROM gmapps/docker_centos_flowr:0.9.8
 
 ## For questions, visit https:
 MAINTAINER "Samir B. Amin" <tweet:sbamin; sbamin.com/contact>
 
-LABEL version="0.9.8" \
+LABEL version="0.9.9" \
 	  mode="in-house beta version" \	
       description="docker image to run GLASS consortium variant calling pipeline" \
       contributor1="flowr and ultraseq pipeline by Sahil Seth, tweet: sethsa" \
@@ -33,6 +33,12 @@ RUN yum install -y cmake && \
 		mkdir p build && cd build && \
 		cmake .. && make && cd .. && \
 		echo 'pathmunge /opt/bamtools/bin after' >> /etc/profile.d/ngspaths.sh
+
+# update flowr, params and ultraseq, referring to specific commits
+RUN Rscript -e 'devtools::install_github("sahilseth/flowr", ref = "987396a")'
+RUN Rscript -e 'devtools::install_github("sahilseth/params", ref = "devel")'
+RUN Rscript -e 'devtools::install_github("flow-r/ultraseq", subdir = "ultraseq", ref = "1552bde")'
+
 
 #### END UPDATING DOCKER IMAGE ####
 
