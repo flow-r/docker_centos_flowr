@@ -23,6 +23,10 @@ LABEL version="0.9.8p1" \
       NOTICE="Third party license: Use of GATK and Mutect tools are subject to approval by GATK team at the Broad Institute, Cambridge, MA, USA. This docker image can not be deployed in public prior to getting appropriate licenses from the Broad Institute to use GATK and mutect for use with GLASS consortium related analysis pipelines."
 
 ## START: Add additional build arguments here ##
+# these will be replaced, with master branches and specific tags.
+RUN Rscript -e 'devtools::install_github("sahilseth/flowr", ref = "devel")'
+RUN Rscript -e 'devtools::install_github("sahilseth/params", ref = "devel")'
+RUN Rscript -e 'devtools::install_github("flow-r/ultraseq", subdir = "ultraseq", ref="glass2")'
 
 ## END: additional build arguments ##
 
