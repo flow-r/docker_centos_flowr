@@ -1,7 +1,8 @@
 ############################################################
-# Dockerfile to build docker image: flowrbio/ultraseq:0.9.8
+# Dockerfile to build docker image: flowrbio/ultraseq:devel
 ############################################################
 
+# From base image flowrbio/ultraseq:0.9.8
 # Source: https://github.com/flow-r/docker_ultraseq/
 # Dockerfile: https://github.com/flow-r/docker_ultraseq/blob/c86c252cbfa1b9f06329a067b3fd4cedf9b910c3/Dockerfile
 # Docker hub tags: https://hub.docker.com/r/flowrbio/ultraseq/tags/
@@ -12,7 +13,7 @@ FROM flowrbio/ultraseq:0.9.8
 ## For questions, visit https:
 MAINTAINER "Samir B. Amin" <tweet:sbamin; sbamin.com/contact>
 
-LABEL version="0.9.8p1" \
+LABEL version="0.9.8p2" \
 	  mode="in-house beta version" \	
       description="docker image to run GLASS consortium variant calling pipeline" \
       contributor1="flowr and ultraseq pipeline by Sahil Seth, tweet: sethsa" \
@@ -34,7 +35,7 @@ RUN Rscript -e 'devtools::install_github("flow-r/ultraseq", subdir = "ultraseq",
 # This requires proper volume mount while running docker run -v flag to allow docker container to see flowr directory.
 WORKDIR /scratch/docker_mutect/flowr
 
-ENV PATH /opt/miniconda/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/opt/samtools/samtools/bin:/opt/samtools/bcftools/bin:/opt/samtools/htslib/bin:/opt/bwa.kit:/opt/bedtools2/bin:/opt/picard/default:/opt/gatk:/opt/mutect
+ENV PATH /opt/miniconda/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/opt/samtools/samtools/bin:/opt/samtools/bcftools/bin:/opt/samtools/htslib/bin:/opt/bwa.kit:/opt/bedtools2/bin:/opt/picard/default:/opt/gatk:/opt/mutect:/opt/bamtools/bin
 
 ENTRYPOINT []
 CMD []
