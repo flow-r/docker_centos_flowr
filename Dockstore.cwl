@@ -26,7 +26,7 @@ dct:creator:
 
 requirements:
   - class: DockerRequirement
-    dockerPull: "docker pull flowrbio/ultraseq:0.9.7"
+    dockerPull: "docker pull flowrbio/ultraseq:latest"
 
 hints:
   - class: ResourceRequirement
