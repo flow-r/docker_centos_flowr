@@ -27,9 +27,8 @@ RUN apt-get update && \
 	python-setuptools sudo locales ca-certificates \
 	software-properties-common cmake libcurl4-openssl-dev wget curl \
 	gdebi tar zip unzip rsync screen nano vim dos2unix bc \ 
-	libcurl4-gnutls-dev libxml2-dev libssl-dev && \
+ 	libxml2-dev libssl-dev && \
 	add-apt-repository --yes ppa:git-core/ppa && \
-	add-apt-repository --yes ppa:openjdk-r/ppa && \
 	apt-get update && \
 	apt-get install --yes git && \
 	apt-get clean && \
