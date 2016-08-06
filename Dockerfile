@@ -23,14 +23,14 @@ LABEL version="1.0-b1" \
 
 #### Install dependencies, some utilities ####
 RUN apt-get update && \
-	apt-get install --yes build-essential python-software-properties \
+	apt-get install --yes --no-install-recommends build-essential python-software-properties \
 	python-setuptools sudo locales ca-certificates \
 	software-properties-common cmake libcurl4-openssl-dev wget curl \
 	gdebi tar zip unzip rsync screen nano vim dos2unix bc \ 
  	libxml2-dev libssl-dev && \
 	add-apt-repository --yes ppa:git-core/ppa && \
 	apt-get update && \
-	apt-get install --yes git && \
+	apt-get install --yes --no-install-recommends git && \
 	apt-get clean && \
 	rm -rf /var/lib/apt/lists/*
 
@@ -65,13 +65,13 @@ RUN mkdir -p /opt && \
 RUN add-apt-repository --yes ppa:webupd8team/java && \
 	apt-get update && \
 	echo oracle-java7-installer shared/accepted-oracle-license-v1-1 select true | /usr/bin/debconf-set-selections && \
-	apt-get install --yes oracle-java7-installer && \
+	apt-get install --yes --no-install-recommends oracle-java7-installer && \
 	echo oracle-java8-installer shared/accepted-oracle-license-v1-1 select true | /usr/bin/debconf-set-selections && \
-	apt-get install --yes oracle-java8-installer && \
+	apt-get install --yes --no-install-recommends oracle-java8-installer && \
 	mkdir -p /opt/java && cd /opt/java && \
 	ln -s /usr/lib/jvm/java-8-oracle/jre jre8 && \
 	ln -s /usr/lib/jvm/java-7-oracle/jre jre7 && \
-	apt-get install --yes oracle-java8-set-default && \
+	apt-get install --yes --no-install-recommends oracle-java8-set-default && \
 	apt-get clean && \
 	rm -rf /var/lib/apt/lists/*
 
@@ -90,7 +90,7 @@ RUN echo "deb http://cran.rstudio.com/bin/linux/ubuntu xenial/" >> /etc/apt/sour
 	gpg --keyserver keyserver.ubuntu.com --recv-key E084DAB9 && \
 	gpg -a --export E084DAB9 | apt-key add - && \
 	apt-get update && \
-	apt-get install --yes r-base r-base-dev && \
+	apt-get install --yes --no-install-recommends r-base r-base-dev && \
 	apt-get clean && \
 	rm -rf /var/lib/apt/lists/*
 
