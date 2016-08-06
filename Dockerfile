@@ -23,7 +23,7 @@ LABEL version="1.0-b1" \
 
 #### Install dependencies, some utilities ####
 RUN apt-get update && \
-	apt-get install --yes --no-install-recommends build-essential python-software-properties \
+	apt-get install --yes build-essential python-software-properties \
 	python-setuptools sudo locales ca-certificates \
 	software-properties-common cmake libcurl4-openssl-dev wget curl \
 	gdebi tar zip unzip rsync screen nano vim dos2unix bc \ 
@@ -31,7 +31,7 @@ RUN apt-get update && \
 	add-apt-repository --yes ppa:git-core/ppa && \
 	add-apt-repository --yes ppa:openjdk-r/ppa && \
 	apt-get update && \
-	apt-get install --yes --no-install-recommends git && \
+	apt-get install --yes git && \
 	apt-get clean && \
 	rm -rf /var/lib/apt/lists/*
 
