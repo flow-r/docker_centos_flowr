@@ -96,7 +96,8 @@ RUN echo "deb http://cran.rstudio.com/bin/linux/ubuntu xenial/" >> /etc/apt/sour
 
 ########## Install flowr ##########
 ## Install R packages and setup flowr for user: root
-RUN mkdir -p /{opt,scratch} && \
+RUN mkdir -p /opt && \
+	mkdir -p /scratch && \
 	cd /opt && \
 	mkdir -p /usr/share/doc/R-3.3.0/html && \
 	Rscript -e 'install.packages(c("httr", "git2r", "stringr", "dplyr", "tidyr", "devtools", "params", "flowr", "funr"), repos = c(CRAN="http://cran.rstudio.com"))' && \
@@ -181,7 +182,8 @@ RUN cd /opt && \
 
 ##### IMPORTANT: LICENSE RESTRICTION #####
 ## Following can not be containerized as they require individual licenses. Use volume mount during docker run.
-RUN mkdir -p /opt/{gatk,mutect} && \
+RUN mkdir -p /opt/gatk && \
+	mkdir -p /opt/mutect && \
 	mkdir -p /scratch/bundle && \
 	chgrp -R glass /scratch && \
 	chmod -R 775 /scratch
