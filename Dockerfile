@@ -11,7 +11,7 @@ FROM ubuntu:16.04
 ## For questions, visit https:
 MAINTAINER "Samir B. Amin" <tweet:sbamin; sbamin.com/contact>
 
-LABEL version="1.0-b1" \
+LABEL version="1.0-b2" \
 	  mode="devp version for GLASS" \	
       description="docker image to run GLASS consortium WGS SNV and SV pipeline" \
       contributor1="flowr and ultraseq variant caller pipeline by Sahil Seth, tweet: sethsa" \
@@ -242,29 +242,6 @@ ENV PATH=/opt/root6/root-6.06.06/bin:$PATH \
 	CMAKE_PREFIX_PATH=/opt/root6/root-6.06.06"${CMAKE_PREFIX_PATH:+:$CMAKE_PREFIX_PATH}"
 ##### end root6 install #####
 
-##### root 5 package - manual install #####
-## Using gcc and g++ v4.8.5
-
-## working code but commented: Prefer root6 ##
-# RUN mkdir -p /opt/root5 && \
-# 	cd /opt/root5 && \
-# 	wget --no-check-certificate https://root.cern.ch/download/root_v5.34.20.source.tar.gz && \
-# 	tar xvzf root_v5.34.20.source.tar.gz && \
-# 	rm -f root_v5.34.20.source.tar.gz && \
-# 	mv root root-5.34.20 && \
-# 	cd root-5.34.20
-
-# edit src file, ./core/base/src/TTimeStamp.cxx in function TTimeStamp::DumpTMStruct 
-# replace line 816 with following:
-# defined(__USE_BSD) || defined(R__MACOSX) || defined(__USE_MISC)
-# https://root.cern.ch/phpBB3/viewtopic.php?t=18651#p79416
-
-## working code but commented: Prefer root6 ##
-# RUN cd /opt/root5/root-5.34.20 && \
-# 	./configure && \
-# 	make
-##### end root5 install #####
-
 ###### Install SpeedSeq and required utilities ######
 ## conda pysam will also install samtools, bcftools and htslib
 ## this will override compiled (if any) samtools, bcftools, htslib in PATH
@@ -326,18 +303,6 @@ RUN /opt/linuxbrew/bin/brew tap homebrew/science && \
 	mkdir -p /scratch/annotations/vep_cache
 ## Pending: link VEP to speedsed; set cache dir, download annotations
 
-#### Install VEP without brew: INCOMPLETE ####
-# RUN mkdir -p /opt && \
-# 	cd /opt && \
-# 	wget --no-check-certificate -O - http://cpanmin.us | perl - --self-upgrade && \
-# 	/usr/local/bin/cpanm Archive::Extract CGI DBI Time::HiRes Archive::Tar Archive::Zip File::Copy::Recursive DBD::mysql && \
-# 	git clone https://github.com/Ensembl/ensembl-tools.git && \
-# 	cd ensembl-tools && \
-# 	git status && \
-# 	git checkout release/76 && \
-# 	perl scripts/variant_effect_predictor/INSTALL.pl \
-# 	-c /opt/bin/speedseq/annotations/vep_cache \
-# 	-a ac -s homo_sapiens -y GRCh37
 ###################################################
 
 #### Install gemini ####
@@ -346,7 +311,7 @@ RUN wget --no-check-certificate https://raw.github.com/arq5x/gemini/master/gemin
     python gemini_install.py /usr/local /usr/local/share/gemini && \
     echo 'pathmunge /usr/local/gemini/bin after' >> /etc/profile.d/3_ngspaths.sh
 #   gemini update
-  
+
 ##### IMPORTANT: LICENSE RESTRICTION #####
 ## Following can not be containerized as they require individual licenses. Use volume mount during docker run.
 RUN mkdir -p /opt/gatk && \
