@@ -1,9 +1,7 @@
 ### devel docker image: 
-[![Build Status](https://travis-ci.org/flow-r/docker_ultraseq.svg?branch=devel)](https://travis-ci.org/flow-r/docker_ultraseq) 
+[![Build Status](https://travis-ci.org/flow-r/docker_ultraseq.svg?branch=ubuntu)](https://travis-ci.org/flow-r/docker_ultraseq) 
 
-```
-docker pull flowrbio/ultraseq:devel
-```
+https://hub.docker.com/r/flowrbio/ultraseq/tags/
 
 ***
 

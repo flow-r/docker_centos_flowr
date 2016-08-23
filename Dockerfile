@@ -26,10 +26,10 @@ RUN apt-get update && \
 	apt-get install --yes --no-install-recommends build-essential python-software-properties \
 	python-setuptools sudo locales ca-certificates \
 	software-properties-common cmake libcurl4-openssl-dev wget curl \
-	gdebi tar zip unzip rsync screen nano vim dos2unix bc \ 
- 	libxml2-dev libssl-dev && \
- 	dpkg-dev libx11-dev libxpm-dev libxft-dev libxext-dev libpng-dev libjpeg-dev binutils && \
- 	libncurses-dev zlib1g-dev && \
+	gdebi tar zip unzip rsync screen nano vim dos2unix bc \
+ 	libxml2-dev libssl-dev \
+ 	dpkg-dev libx11-dev libxpm-dev libxft-dev libxext-dev libpng-dev libjpeg-dev binutils \
+ 	libncurses-dev zlib1g-dev \
  	ruby libarchive-zip-perl libdbd-mysql-perl libjson-perl && \
 	add-apt-repository --yes ppa:git-core/ppa && \
 	apt-get update && \
@@ -106,9 +106,9 @@ RUN mkdir -p /opt && \
 	Rscript -e 'devtools::install_github("glass-consortium/ultraseq", subdir = "ultraseq", ref="master")' && \
 	mkdir -p /root/bin && \
 	Rscript -e 'library(flowr);setup()' && \
-	rm -f /opt/Rplots.pdf & \
-	/root/bin/flowr run x=sleep_pipe platform=local execute=TRUE && \
-	rm -f /root/Rplots.pdf & \
+	rm -f /opt/Rplots.pdf && \
+	/usr/local/lib/R/site-library/flowr/scripts/flowr run x=sleep_pipe platform=local execute=TRUE && \
+	rm -f /root/Rplots.pdf && \
 	ln -s /usr/local/lib/R/site-library/flowr/scripts/flowr /usr/local/bin/flowr
 
 ## setup flowr for user: glass
@@ -251,6 +251,12 @@ RUN conda install --yes -c bioconda pysam=0.9.1 gawk && \
 	cd /opt && \
 	git clone --recursive https://github.com/hall-lab/speedseq && \
 	cd speedseq && \
+	rm -f Makefile
+
+# disable CNVnator compilation
+ADD ./config/speedseq_mkfile /opt/speedseq/Makefile
+
+RUN	cd /opt/speedseq && \
 	make && \
 	cat install.log && \
 	echo 'pathmunge /opt/speedseq/bin after' >> /etc/profile.d/3_ngspaths.sh && \
@@ -299,18 +305,14 @@ ENV PATH=/opt/linuxbrew/bin:$PATH \
 RUN /opt/linuxbrew/bin/brew tap homebrew/science && \
 	/opt/linuxbrew/bin/brew install htslib && \
 	/opt/linuxbrew/bin/brew tap chapmanb/homebrew-cbl && \
-	/opt/linuxbrew/bin/brew install vep && \
+	wget --no-check-certificate -O - http://cpanmin.us | perl - --self-upgrade && \
+	/usr/local/bin/cpanm Archive::Extract CGI DBI Time::HiRes Archive::Tar Archive::Zip File::Copy::Recursive
+
+RUN	/opt/linuxbrew/bin/brew install vep && \
 	mkdir -p /scratch/annotations/vep_cache
 ## Pending: link VEP to speedsed; set cache dir, download annotations
 
 ###################################################
-
-#### Install gemini ####
-## SKIP: Large (>10 GB) database of annotations if running gemini update command
-RUN wget --no-check-certificate https://raw.github.com/arq5x/gemini/master/gemini/scripts/gemini_install.py && \
-    python gemini_install.py /usr/local /usr/local/share/gemini && \
-    echo 'pathmunge /usr/local/gemini/bin after' >> /etc/profile.d/3_ngspaths.sh
-#   gemini update
 
 ##### IMPORTANT: LICENSE RESTRICTION #####
 ## Following can not be containerized as they require individual licenses. Use volume mount during docker run.
